@@ -1,0 +1,17 @@
+<html>
+    <head>
+        <title>Login-Page</title>
+    </head>
+    <body>
+        {% if error %}
+        <b> Error: </b>{{error}}
+        {% endif %}
+        <form action="" method="POST">
+            User Name:<br>
+            <input type="text" placeholder="Enter Username" name="username" required><br>
+            Password:<br>
+            <input type="password" placeholder= "Enter Password" name="password"required><br><br>
+            <input type="submit" value="Submit">
+        </form>
+    </body>
+</html>
