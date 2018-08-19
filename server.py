@@ -13,7 +13,7 @@ def home(name= None):
 def login():
     error= None
     if request.method == 'POST':
-        if request.form['username']== "sankho" and request.form["password"] == "1234":
+        if request.form['username']== "Sankhojjal" and request.form["password"] == "1234":
            #session["logged_in"]= True 
             global FLAG 
             FLAG=True

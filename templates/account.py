@@ -1,10 +1,9 @@
-from templates import mongoData
 class Account():
     name = ""
     acc_Num = ''
     mainBalance=0
-    PayeeDetails={}  
-    
+    PayeeDetails={}
+       
     def __init__(self, name,acc_Num,mainBalance):
         self.name=name
         self.acc_Num=acc_Num
