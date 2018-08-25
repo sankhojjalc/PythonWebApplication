@@ -7,14 +7,10 @@ dataBase={
         "name": "Sankho", 
         "password": '1234',
         "balance": 22222222,
-        "addPayee": [{
-            "name": "Podu",
-            "acc_det": 2000
-        },
-        {
-            "name": "Prateek",
-            "acc_det": 2000
-        }]
+        "addPayee": {
+            "name": ["Podu","Baban"],
+            "acc_det": [2000000,400000000]
+        }
 } 
 # mycol.update(
 #     {"name": 'Sankho'},

@@ -70,7 +70,7 @@ def transferMoney():
     else:
          return redirect(url_for("login"))
 
-@app.route("/depositMoney.html")
+@app.route("/depositMoney.html",methods=['GET','POST'])
 def depositMoney():
     if(FLAG== True):
         if request.method=='GET':
