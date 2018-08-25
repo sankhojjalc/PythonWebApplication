@@ -1,20 +1,15 @@
 from flask import *
-from templates import account
+from templates import account, mongoData
 SECRET_KEY = "sankhojjal"
 app = Flask(__name__)
 app.config.from_object(__name__)
-accObj=account.Account('Sankho',12345,1000000)
+accObj=account.Account()
 FLAG = False
-'''@app.route("/")
-def home(name= None):
-    return render_template("index.html", name= name)'''
-
 @app.route("/", methods = ["GET", "POST"])
 def login():
     error= None
     if request.method == 'POST':
-        if request.form['username']== "Sankhojjal" and request.form["password"] == "1234":
-           #session["logged_in"]= True 
+        if request.form['username']== mongoData.resp['name'] and request.form["password"] == str(mongoData.resp['password']):
             global FLAG 
             FLAG=True
             return redirect(url_for("dashBoard"))
@@ -24,8 +19,11 @@ def login():
 
 @app.route("/dashBoard")
 def dashBoard():
+    UserName= mongoData.resp['name']
+    balance = mongoData.resp['balance']
+    
     if(FLAG== True):
-        return render_template("dashBoard.html")
+        return render_template("dashBoard.html",UserName=UserName,balance=balance)
     else:   
         return redirect(url_for("login"))
 
@@ -54,18 +52,37 @@ def removePayee():
     else:
          return redirect(url_for("login"))
 
-@app.route("/moneyTransfer.html")
+@app.route("/moneyTransfer.html",methods=['GET','POST'])
 def transferMoney():
     if(FLAG== True):
-        return render_template("transferMoney.html")
+        if request.method=='GET':
+            return render_template("transferMoney.html")
+        else:
+            amount = int(request.form['amount'])
+            balance = mongoData.resp['balance']
+            dummyVar= accObj.transferMoney(amount,balance)
+            if(dummyVar== False):
+                error= "Not Sufficient message"
+                return render_template("transferMoney.html", error= error)
+            else:
+                UpdatedBalance = mongoData.resp['balance']
+                return render_template("dashBoard.html",balance=UpdatedBalance)
     else:
          return redirect(url_for("login"))
 
 @app.route("/depositMoney.html")
 def depositMoney():
     if(FLAG== True):
-        return render_template("depositMoney.html")
+        if request.method=='GET':
+            return render_template("depositMoney.html")
+        else:
+            amount = int(request.form['amount'])
+            balance = mongoData.resp['balance']
+            accObj.depositMoney(amount,balance)
+            UpdatedBalance = mongoData.resp['balance']
+            return render_template("dashBoard.html",balance=UpdatedBalance)
     else:
          return redirect(url_for("login"))
+
 
 app.run(debug=True)

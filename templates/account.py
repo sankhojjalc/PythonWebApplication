@@ -1,14 +1,10 @@
+from templates import mongoData
 class Account():
-    name = ""
-    acc_Num = ''
-    mainBalance=0
+    name = mongoData.resp['name']
+    acc_Num = mongoData.resp['_id']
+    mainBalance=mongoData.resp['balance']
     PayeeDetails={}
-       
-    def __init__(self, name,acc_Num,mainBalance):
-        self.name=name
-        self.acc_Num=acc_Num
-        self.mainBalance=mainBalance
-    
+    datas= mongoData.dataBase    
     def displayName(self):
         return (self.name)
     def displayAcc_Num(self):
@@ -16,15 +12,26 @@ class Account():
     def displayMainBalance(self):
         return (self.mainBalance)
     
-    def transferMoney(self,amount):
-        error= None        
-        if(amount>self.mainBalance):
-            error= 'Insufficient Balance'
+    def transferMoney(self,amount,balance):
+        check= False
+        if(amount>balance):
+            return check
         else:
-           self.mainBalance-=amount
-    
-    def depositMoney(self,amount):
-        self.mainBalance+=amount
+            check=True
+            UpdatedBalance=balance-amount
+            mongoData.mycol.update(
+                {"name":'Sankho'},
+                {'$set':{"balance": UpdatedBalance}
+                }
+            )
+   
+    def depositMoney(self,amount,balance):
+        UpdatedBalance= balance+amount
+        mongoData.mycol.update(
+            {"name":'Sankho'},
+            {'$set':{"balance": UpdatedBalance}
+            }
+        )
     
     def addPayeeDetails(self,payeeAccountNumber,payeeName):     
       self.PayeeDetails[payeeAccountNumber]=payeeName

@@ -5,12 +5,16 @@
     <title>Transfer Money</title>
 </head>
 <body>
+    {% if error %}
+    <b>Error:</b>{{error}}
+    {% endif %}
+    <form method="POST">
     Account Number:<br>
-    <input type="text" id="acc_num" required><br>
+    <input type="text" name="acc_num" required><br>
     Amount to be transfered:<br>
-    <input type="text" id= "amoount" required><br>
+    <input type="text" name= "amount" required><br>
     <br>
     <button type="submit">Send Money</button>
-
+    </form>
 </body>
 </html>
