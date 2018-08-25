@@ -29,6 +29,8 @@ def dashBoard():
 
 @app.route("/addPayee.html", methods=['GET','POST'])
 def addPayee():
+    UserName= mongoData.resp['name']
+    balance = mongoData.resp['balance']
     if(FLAG== True):
         if request.method == 'GET':
             return render_template("addPayee.html")
@@ -36,19 +38,22 @@ def addPayee():
             name= request.form['name']
             acc_Num= request.form['acc_num']      
             accObj.addPayeeDetails(acc_Num,name)
-            return render_template("dashBoard.html")
+            return render_template("dashBoard.html",UserName=UserName,balance=balance)
     else:
          return redirect(url_for("login"))
 
 @app.route("/removePayee.html",methods=['GET','POST'])
 def removePayee():
+    UserName= mongoData.resp['name']
+    balance = mongoData.resp['balance']
     if(FLAG== True):
         if request.method == 'GET':
             return render_template("removePayee.html")
         else:
+            name= request.form['name']
             acc_Num= request.form['acc_num']
-            accObj.removePayeeDetails(acc_Num)
-            return render_template("dashBoard.html")
+            accObj.removePayeeDetails(name,acc_Num)
+            return render_template("dashBoard.html",UserName=UserName,balance=balance)
     else:
          return redirect(url_for("login"))
 
@@ -65,8 +70,9 @@ def transferMoney():
                 error= "Not Sufficient message"
                 return render_template("transferMoney.html", error= error)
             else:
+                UserName= mongoData.resp['name']
                 UpdatedBalance = mongoData.resp['balance']
-                return render_template("dashBoard.html",balance=UpdatedBalance)
+                return render_template("dashBoard.html",UserName=UserName,balance=UpdatedBalance)
     else:
          return redirect(url_for("login"))
 
@@ -79,8 +85,9 @@ def depositMoney():
             amount = int(request.form['amount'])
             balance = mongoData.resp['balance']
             accObj.depositMoney(amount,balance)
+            UserName= mongoData.resp['name']
             UpdatedBalance = mongoData.resp['balance']
-            return render_template("dashBoard.html",balance=UpdatedBalance)
+            return render_template("dashBoard.html",UserName=UserName,balance=UpdatedBalance)
     else:
          return redirect(url_for("login"))
 

@@ -4,7 +4,7 @@ class Account():
     acc_Num = mongoData.resp['_id']
     PayeeDetails={}
     datas= mongoData.dataBase    
-    
+
     def transferMoney(self,amount,balance):
         check= False
         if(amount>balance):
@@ -26,12 +26,26 @@ class Account():
             }
         )
     
-    def addPayeeDetails(self,payeeAccountNumber,payeeName):     
-      self.PayeeDetails[payeeAccountNumber]=payeeName
-      for key,val in self.PayeeDetails.items():
-          print('key {} value {}'.format(key,val))
+    def addPayeeDetails(self,payeeAccountNumber,payeeName):
+        mongoData.mycol.update(
+            {"name": 'Sankho'},
+            {'$push':{"addPayee.Added_User_Name": payeeName}},
+            upsert=True
+        )
+        mongoData.mycol.update(
+            {"name": 'Sankho'},
+            {'$addToSet':{"addPayee.acc_det": payeeAccountNumber}},
+            upsert=True
+        )    
 
-    def removePayeeDetails(self,payeeAccountNumber):
-        self.PayeeDetails.pop(payeeAccountNumber,None)
-        for key,val in self.PayeeDetails.items():
-          print(key,val)
+    def removePayeeDetails(self,name,payeeAccountNumber):
+        mongoData.mycol.update(
+            {'name': "Sankho"},
+            {'$pop':{"addPayee.acc_det": payeeAccountNumber}},
+            upsert= True
+        )
+        mongoData.mycol.update(
+            {'name': "Sankho"},
+            {'$pop':{"addPayee.Added_User_Name": name}},
+            upsert= True
+        )

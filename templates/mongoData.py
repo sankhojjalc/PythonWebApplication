@@ -8,23 +8,14 @@ dataBase={
         "password": '1234',
         "balance": 22222222,
         "addPayee": {
-            "name": ["Podu","Baban"],
+            "Added_User_Name": ["Podu","Baban"],
             "acc_det": [2000000,400000000]
         }
-} 
-# mycol.update(
-#     {"name": 'Sankho'},
-#     {"$set":{"balance": 66666666},
-#     },
-#     upsert=False
-#     )
+}
 time.sleep(3)
 posts= mydb.posts
 #post_id= posts.insert_one(dataBase).inserted_id
 #Above line is used to insert into Collection
-#pprint.pprint(posts.find_one())
 updatedVal = posts.find_one()
 json_str= json.dumps(updatedVal)#converting dict to a str obj
 resp = json.loads(json_str)
-#print(resp["name"])
-print(resp["balance"])
